@@ -1,13 +1,25 @@
 /* Reset some default margin and padding */
+
 * {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
 }
+html {
+	font-size: 16px;
+}
 
 body {
+	height: 100vh;
+	width: 100vw;
+	overflow-x: hidden;
 	font-family: Arial, sans-serif;
 	background-color: #f4f4f4;
+	background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+		url("./pictures/header.jpg");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 
 .container {
@@ -19,12 +31,13 @@ body {
 .header {
 	background-color: #333;
 	color: white;
+	border-radius: 8px;
 	padding: 15px 0;
 	text-align: center;
 }
 
 .section {
-	background-color: white;
+	background-color: #eee;
 	border: 1px solid #ddd;
 	margin-top: 20px;
 	padding: 20px;
@@ -34,7 +47,16 @@ body {
 
 .section h2 {
 	color: #333;
+	font-size: 2rem;
 	margin-bottom: 10px;
+}
+.wallet {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	flex-flow: row;
+	flex-direction: row;
 }
 
 .button {
@@ -44,6 +66,7 @@ body {
 	padding: 10px 20px;
 	cursor: pointer;
 	border-radius: 4px;
+	margin: 10px 0;
 	transition: background-color 0.3s;
 }
 
@@ -56,23 +79,36 @@ body {
 	border: 1px solid #ccc;
 	border-radius: 4px;
 	width: 100%;
-	margin-bottom: 15px;
+	margin-bottom: 10px;
+	font-size: 1.2rem;
 }
 
 .paragraph {
-	margin-bottom: 10px;
+	margin: 10px 0;
 	color: #555;
 }
 
 .winner {
-	color: #28a745;
+	color: rgb(31, 48, 38);
 	font-weight: bold;
 	margin-top: 15px;
 	font-size: 1.2rem;
 }
+.setWinnerDiv {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.setWinner {
+	padding: 20px 20px;
+	width: 150px;
+}
 
 /* Responsive Design */
 @media screen and (max-width: 600px) {
+	html {
+		font-size: 12px;
+	}
 	.container {
 		padding: 10px;
 	}
