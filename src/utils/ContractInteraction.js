@@ -1,19 +1,18 @@
-import { Web3 } from 'web3';
 import Lottery from 'contracts/Lottery2.json';
-const contractAddress = '0xB3b65AA5E19D1501f3e5eE52021b930B00D22BE1';
-const ganacheContractAddress = '0xef396e0ca9cB014832aeD27DceB7dfa0c17825d5';
+const contractAddress = '0x69cA62eD541F91D86b19e2af2C219F2F86428b66';
+// const ganacheContractAddress = '0x05E2De803161978D8f05Ca5408F0e396bF3Ed19e';
 let web3, contract
 
 async function createContract(provider) {
     web3 = provider
-    contract = new web3.eth.Contract(Lottery.abi, ganacheContractAddress);
+    contract = new web3.eth.Contract(Lottery.abi, contractAddress);
 }
 
 async function getContractBalance(provider) {
     if (!contract) {
         await createContract(provider);
     }
-    let bal = await web3.eth.getBalance(ganacheContractAddress);
+    let bal = await web3.eth.getBalance(contractAddress);
     return bal;
 }
 
@@ -41,7 +40,6 @@ async function getLotteryPrice(provider, caller) {
         await createContract(provider);
     }
     let price = await contract.methods.lotteryPrice().call({ from: caller });
-    console.log('lottery Price is : ', price);
     return price;
 }
 
@@ -65,6 +63,21 @@ async function participate(provider, caller) {
 
 }
 
+
+async function searchPerson(provider, caller, ad) {
+    if (!contract) {
+        await createContract(provider);
+    }
+    try {
+        let res = await contract.methods.isParticipated(ad).call({ from: caller });
+        return res;
+
+    } catch (e) {
+        console.error(e);
+    }
+    return false;
+}
+
 async function setTheWinner(provider, caller) {
     if (!contract) {
         await createContract(provider);
@@ -72,11 +85,13 @@ async function setTheWinner(provider, caller) {
     let winner;
     try {
         let man = await getManager(provider, caller);
-        if (caller != man) {
+        if (caller !== man) {
             return new Error('Sorry Only the managers are allowed to declare a winner');
         } else {
-            winner = await contract.methods.declearWinner().send({ from: caller });
+            await contract.methods.declearWinner().send({ from: caller });
+            winner = await contract.methods.winner().call({ from: caller });
         }
+        console.log('winner is : ', winner);
         return winner;
     } catch (e) {
         Error(e);
@@ -84,4 +99,4 @@ async function setTheWinner(provider, caller) {
 }
 
 
-export { getManager, getContractBalance, getLotteryPrice, participate, setTheWinner, getTotalCostumers }
+export { getManager, getContractBalance, getLotteryPrice, participate, setTheWinner, getTotalCostumers, searchPerson }

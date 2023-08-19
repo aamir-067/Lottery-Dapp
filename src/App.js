@@ -3,6 +3,7 @@ import detectEthereumProvider from '@metamask/detect-provider';
 import { Web3 } from 'web3';
 import './App.css';
 import { getManager, getContractBalance, getLotteryPrice, participate, setTheWinner, getTotalCostumers } from './utils/ContractInteraction';
+import { searchPerson } from './utils/ContractInteraction';
 
 function App() {
   const [managerView, setManagerView] = useState(false);
@@ -14,6 +15,7 @@ function App() {
   const [accBalance, setAccountBalance] = useState(0);
   const [prize, setPrize] = useState(0);
   const [lotteryPrice, setLotteryPrice] = useState(0);
+  const [uncheckedAddress, setUncheckedAddress] = useState('');
 
   const initializeWeb3 = async () => {
     try {
@@ -78,7 +80,27 @@ function App() {
     await getPrize();
   }
 
+  //  manager section functions.
+  const getInput = (e) => {
+    setUncheckedAddress(e.target.value);
+  }
 
+  async function checkAddressDetails() {
+    if (manager.length !== uncheckedAddress.length) {
+      console.error('please enter a valid address');
+      return;
+    }
+    if (manager === accounts[0]) {
+      let res = await searchPerson(web3Api.web3, accounts[0], uncheckedAddress);
+      if (res) {
+        console.log('The address is participated in Lottery')
+      } else {
+        console.log('The address is not participate in Lottery');
+      }
+    } else {
+      console.error('Only manager can check the participant details');
+    }
+  }
 
 
   async function initializeAll() {
@@ -93,8 +115,8 @@ function App() {
       console.error(err);
     }
   }
-  useEffect(() => {
 
+  useEffect(() => {
     initializeAll();
   }, [web3Api.provider]);
 
@@ -110,7 +132,7 @@ function App() {
           <p className="paragraph">Lottery Manager : {manager ? manager : 'undefined'}</p>
           <p className="paragraph">Lottery Prize: {prize ? web3Api.web3.utils.fromWei(prize, 'gwei') : prize} Gwei</p>
           <p className="paragraph">Total Participants: {`${participant}`}</p>
-          <p className="paragraph">Lottery Winner : {winner ? winner : 'not declared yet'}</p>
+          <p className="paragraph">Previous Lottery Winner : {winner ? winner : 'not declared yet'}</p>
           <button className="button" onClick={() => {
             setManagerView(!managerView)
           }} >
@@ -141,9 +163,10 @@ function App() {
               className="input"
               id='input'
               type="text"
+              onChange={(e) => { getInput(e) }}
               placeholder="participant address"
             />
-            <button className="button" >
+            <button className="button" onClick={checkAddressDetails} >
               Search
             </button>
             <div className='setWinnerDiv'><button className="button setWinner" onClick={declearWinner}>Declare Winner</button></div>

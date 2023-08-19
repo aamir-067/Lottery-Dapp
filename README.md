@@ -1,4 +1,4 @@
-# About the Project
+# `About the Project`
 
 1. this is a lottery project. the contract is already deployed
 2. anyone can participate in the lottery and only the manager can declare the winner only if there is 3 or more participants.
@@ -7,15 +7,20 @@
 5. in manager section he can check the address whether he/she is participated in the lottery or not and can also declear the winner.
 6. in participant section the participant address is displayed, their wallet balance and the lottery price is displayed. and one button through which he can participate in the lottery.
 
-## `Note :`
+## `Note`
 
-1. right now the contract is deployed in the ganache so so probabaly this will not work on your site.(ofcourse this will be deployed to the testnet after it finished and you will run it). so to run the dapp you have to deploy the Lottery2.sol on ganache on your site. and the change the address of the contract in the ContractInteraction.js file.
+1. Contract is on sepolia network so to check the project or use it make sure you have some amount of ethers in your wallet.
+2. if you want to be the manager of the project deployee the `Lottery.sol` (located in public/contracts) and then change the address in the ContractInteraction.js file.
 
-## about this commit:
+## `About this commit`
 
-1. in this i updated the contract (lottery.sol --> lottery2.sol) so i can show the total number of participants of the lottery and also i can check that the address is participated in the lottery or not.
-2. currently the manager section is not functional.
-3. make sure that you are running the ganache in background and deployed the lottery2.sol in your ganache and change the address of the contract in the ContractInteraction.js file.
+1. in this i modified the contract (lottery2.sol) so i can check the lottery winner.
+
+2. uploaded the contract to [sepolia](https://sepolia.dev/) network. (you can find the address in ContractInteraction.js file in `src/utils`)
+
+## `Contributers`
+
+### [aamir-067](https://github.com/aamir-067) (owner)
 
 # Getting Started with Create React App
 

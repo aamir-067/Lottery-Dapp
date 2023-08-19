@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 contract Lottery2 {
     address public immutable manager;
     address[] public persons;
+    address public winner;
     uint256 public constant lotteryPrice = 5 gwei;
 
     constructor() {
@@ -53,15 +54,14 @@ contract Lottery2 {
         return address(this).balance;
     }
 
-    function declearWinner() public payable returns (address) {
+    function declearWinner() public payable {
         require(
             msg.sender == manager,
             "Only the manager can declear the winner"
         );
-        require(persons.length == 3, "Participants should be greater then 3");
-        address payable winner = payable(persons[generateRandom()]);
-        winner.transfer(getPrizeBalance());
+        require(persons.length >= 3, "Participants should be greater then 3");
+        winner = persons[generateRandom()];
+        payable(winner).transfer(getPrizeBalance());
         persons = new address payable[](0);
-        return winner;
     }
 }
